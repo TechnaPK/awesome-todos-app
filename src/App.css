@@ -8,8 +8,22 @@
 .Content{
   max-width: 700px;
   margin: 10px auto;
-  padding: 20px;
+  
+}
+.DisplayTodos{
+  width: 65%;
+  float: left;
   border: 1px solid #eccccc;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.AddTodo{
+  width: 30%;
+  float: right;
+  border: 1px solid #eccccc;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .Content ul{
@@ -18,8 +32,9 @@
   padding: 0;
 }
 
-.Content button{
+.AddTodo button, .AddTodo input{
   width: 100%;
+  box-sizing: border-box;
 }
 
 .Footer{
