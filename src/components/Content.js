@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-
 class DisplayTodos extends Component {
     render() {
         return <div className="DisplayTodos">
