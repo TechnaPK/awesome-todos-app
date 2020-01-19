@@ -44,6 +44,14 @@
   list-style-position: outside;
   padding: 0;
 }
+.Content ul li{
+  border: 1px solid #eccccc;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+.Content ul li.completed{
+  text-decoration: line-through;
+}
 
 .AddTodo button, .AddTodo input{
   width: 100%;
