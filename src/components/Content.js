@@ -50,27 +50,10 @@ class AddTodo extends Component {
 class Content extends Component {
 
     constructor( props ){
-
         super(props)
-        
         this.state = {
             todos: ["Offering Prayer", "Morning Walk", "Breakfast"]
         }
-
-        console.log("This message is generated from: constructor")
-
-    }
-
-    componentDidMount(){
-        console.log("This message is generated from: componentDidMount")
-    }
-
-    componentDidUpdate(){
-        console.log("This message is generated from: componentDidUpdate")
-    }
-
-    componentWillUnmount(){
-        console.log("This message is generated from: componentWillUnmount")
     }
 
     addToList = (todo) => {
@@ -89,7 +72,6 @@ class Content extends Component {
 
             <AddTodo addToList={this.addToList} />
             <div style={{ clear: 'both' }}></div>
-            <button onClick={()=>{ this.forceUpdate() }}></button>
         </div>
 
     }
