@@ -9,19 +9,23 @@ import Footer from './components/Footer'
 
 import { BrowserRouter, Route } from 'react-router-dom'
 
+import TodosContextProvider from './contexts/TodosContext'
+
 function App() {
   return (
-    <BrowserRouter>
-      <div className="App">
-        <Header />
+    <TodosContextProvider>
+      <BrowserRouter>
+        <div className="App">
+          <Header />
 
-        <Route path="/contact" component={Contact} />
-        <Route path="/about" component={About} />
-        <Route exact path="/" component={Content} />
+          <Route path="/contact" component={Contact} />
+          <Route path="/about" component={About} />
+          <Route exact path="/" component={Content} />
 
-        <Footer />
-      </div>
-    </BrowserRouter>
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </TodosContextProvider>
   );
 }
 

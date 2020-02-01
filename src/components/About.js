@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 
+import { TodosContext } from '../contexts/TodosContext'
+
 class About extends Component {
-    
-    state = {
-        username: ""
-    }
-    
+
     render() {
 
-        return <div className="About">
+        return (
+            <TodosContext.Consumer>
+                {(todosContext) => {
 
-            <h2>About Page</h2>
+                    console.log(todosContext)
 
-        </div>
+                    return <div className="About">
+
+                        <h2>About Page</h2>
+
+                    </div>
+
+                }}
+            </TodosContext.Consumer>
+        )
+
+
 
     }
 
