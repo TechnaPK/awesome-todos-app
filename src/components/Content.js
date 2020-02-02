@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TodosContext } from '../contexts/TodosContext'
+import { AuthContext } from '../contexts/AuthContext'
 
 class AddTodo extends Component {
 
@@ -16,8 +17,6 @@ class AddTodo extends Component {
         return <TodosContext.Consumer>
 
             {(todosContext) => {
-
-                console.log(todosContext)
 
                 return <div className="AddTodo">
                     <input type="text" value={this.state.todoField} placeholder="Enter Todo" onChange={this.handleChange} />
@@ -37,39 +36,43 @@ class AddTodo extends Component {
 class Content extends Component {
 
     render() {
+        return <AuthContext.Consumer>
+            {(authContext) => {
+                return <TodosContext.Consumer>
+                    {(todosContext) => {
 
-        return <TodosContext.Consumer>
+                        return <div className="Content">
 
-            {(todosContext) => {
+                            <h2>Todos</h2>
 
-                return <div className="Content">
+                            <div className="DisplayTodos">
+                                <ul>
+                                    {todosContext.todos.map((todo, index) => {
+                                        return <li key={index} className={todo.isCompleted === true ? "completed" : ""}>
+                                            {todo.title === "Breakfast" ? `I don't like eggs` : todo.title}
+                                            <button style={{ float: 'right' }} onClick={() => { todosContext.deleteTodo(todo) }}>Delete</button>
+                                            {
+                                                todo.isCompleted
+                                                    ? ''
+                                                    : <button style={{ float: 'right', marginRight: 5 }} onClick={() => { todosContext.markCompleted(todo) }}>Mark As Completed</button>
+                                            }
+                                        </li>
+                                    })}
+                                </ul>
+                            </div>
 
-                    <h2>Todos</h2>
+                            {/* <DisplayTodos abc={this.state.todos} /> */}
 
-                    <div className="DisplayTodos">
-                        <ul>
-                            {todosContext.todos.map((todo, index) => {
-                                return <li key={index} className={todo.isCompleted === true ? "completed" : ""}>
-                                    {todo.title === "Breakfast" ? `I don't like eggs` : todo.title}
-                                    <button style={{ float: 'right' }} onClick={() => { todosContext.deleteTodo(todo) }}>Delete</button>
-                                    {
-                                        todo.isCompleted
-                                            ? ''
-                                            : <button style={{ float: 'right', marginRight: 5 }} onClick={() => { todosContext.markCompleted(todo) }}>Mark As Completed</button>
-                                    }
-                                </li>
-                            })}
-                        </ul>
-                    </div>
+                            <AddTodo addToList={this.addToList} />
+                            <div style={{ clear: 'both' }}></div>
+                        </div>
 
-                    {/* <DisplayTodos abc={this.state.todos} /> */}
 
-                    <AddTodo addToList={this.addToList} />
-                    <div style={{ clear: 'both' }}></div>
-                </div>
-
+                    }}
+                </TodosContext.Consumer>
             }}
-        </TodosContext.Consumer>
+        </AuthContext.Consumer>
+
 
     }
 

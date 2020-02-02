@@ -10,22 +10,27 @@ import Footer from './components/Footer'
 import { BrowserRouter, Route } from 'react-router-dom'
 
 import TodosContextProvider from './contexts/TodosContext'
+import AuthContextProvider from './contexts/AuthContext'
 
 function App() {
   return (
-    <TodosContextProvider>
-      <BrowserRouter>
-        <div className="App">
-          <Header />
+    <AuthContextProvider>
+      <TodosContextProvider>
 
-          <Route path="/contact" component={Contact} />
-          <Route path="/about" component={About} />
-          <Route exact path="/" component={Content} />
+        <BrowserRouter>
+          <div className="App">
+            <Header />
 
-          <Footer />
-        </div>
-      </BrowserRouter>
-    </TodosContextProvider>
+            <Route path="/contact" component={Contact} />
+            <Route path="/about" component={About} />
+            <Route exact path="/" component={Content} />
+
+            <Footer />
+          </div>
+        </BrowserRouter>
+        
+      </TodosContextProvider>
+    </AuthContextProvider>
   );
 }
 
