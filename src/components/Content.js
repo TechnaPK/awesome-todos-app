@@ -14,21 +14,34 @@ class AddTodo extends Component {
     }
 
     render() {
+        
         return <TodosContext.Consumer>
 
             {(todosContext) => {
 
                 return <div className="AddTodo">
-                    <input type="text" value={this.state.todoField} placeholder="Enter Todo" onChange={this.handleChange} />
-                    <button onClick={() => {
-                        let todo = { title: this.state.todoField, time: "any", isCompleted: false }
-                        todosContext.addToList(todo)
-                    }}>Add Todo</button>
+                    <div className="row">
+                        <div className="col s12">
+                            <h5>Add New Item</h5>
+                        </div>
+                        <div className="input-field col s12">
+                            <input value={this.state.todoField} id="todoField" type="text" className="validate" onChange={this.handleChange} />
+                            <label htmlFor="todoField">Enter Todo</label>
+                        </div>
+                    </div>
+                    <div style={{overflow: 'auto'}}>
+
+                        <button className="btn purple lighten-1 right" onClick={() => {
+                            let todo = { title: this.state.todoField, time: "any", isCompleted: false }
+                            todosContext.addToList(todo)
+                        }}>Add Todo</button>
+                    </div>
                 </div>
 
             }}
 
         </TodosContext.Consumer>
+
     }
 
 }
@@ -43,28 +56,41 @@ class Content extends Component {
 
                         return <div className="Content">
 
-                            <h2>Todos</h2>
+                            <div className="container">
+                                <div className="row" style={{ marginTop: 40 }}>
+                                    <div className="col s8">
+                                        <div className="card-panel">
 
-                            <div className="DisplayTodos">
-                                <ul>
-                                    {todosContext.todos.map((todo, index) => {
-                                        return <li key={index} className={todo.isCompleted === true ? "completed" : ""}>
-                                            {todo.title === "Breakfast" ? `I don't like eggs` : todo.title}
-                                            <button style={{ float: 'right' }} onClick={() => { todosContext.deleteTodo(todo) }}>Delete</button>
-                                            {
-                                                todo.isCompleted
-                                                    ? ''
-                                                    : <button style={{ float: 'right', marginRight: 5 }} onClick={() => { todosContext.markCompleted(todo) }}>Mark As Completed</button>
-                                            }
-                                        </li>
-                                    })}
-                                </ul>
+                                            <ul className="collection with-header">
+                                                <li className="collection-header"><h4>Todos</h4></li>
+
+                                                {todosContext.todos.map((todo, index) => {
+                                                    return <li key={index} className={`collection-item ${todo.isCompleted === true ? "green lighten-3" : ""}`}>
+                                                        <div>{todo.title === "Breakfast" ? `I don't like eggs` : todo.title}
+                                                            <a href="#!" className="secondary-content red-text" onClick={() => { todosContext.deleteTodo(todo) }}><i className="material-icons">delete</i></a>
+                                                            {
+                                                                todo.isCompleted
+                                                                    ? ''
+                                                                    : <a href="#!" className="secondary-content green-text" onClick={() => { todosContext.markCompleted(todo) }}><i className="material-icons">done</i></a>
+                                                            }
+                                                        </div>
+                                                    </li>
+                                                })}
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                    <div className="col s4">
+                                        <div className="card-panel">
+
+                                            <AddTodo addToList={this.addToList} />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             {/* <DisplayTodos abc={this.state.todos} /> */}
 
-                            <AddTodo addToList={this.addToList} />
-                            <div style={{ clear: 'both' }}></div>
                         </div>
 
 

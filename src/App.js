@@ -12,6 +12,10 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import TodosContextProvider from './contexts/TodosContext'
 import AuthContextProvider from './contexts/AuthContext'
 
+import M from 'materialize-css'
+
+console.log( M )
+
 function App() {
   return (
     <AuthContextProvider>
