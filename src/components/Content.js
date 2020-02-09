@@ -64,7 +64,7 @@ class Content extends Component {
                                                 <li className="collection-header"><h4>Todos</h4></li>
 
                                                 {todosContext.todos.map((todo, index) => {
-                                                    return <li key={index} className={`collection-item ${todo.isCompleted === true ? "green lighten-3" : ""}`}>
+                                                    return <li key={index} className={`collection-item ${todo.isCompleted === true ? "completed" : ""}`}>
                                                         <div>{todo.title === "Breakfast" ? `I don't like eggs` : todo.title}
                                                             <a href="#!" className="secondary-content red-text" onClick={() => { todosContext.deleteTodo(todo) }}><i className="material-icons">delete</i></a>
                                                             {

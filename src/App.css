@@ -1,0 +1,9 @@
+body{
+    background: #eee;
+}
+
+.collection-item.completed{
+    text-decoration: line-through;
+    color: green;
+    font-weight: bold;
+}
