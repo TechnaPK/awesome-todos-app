@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import { AuthContext } from '../contexts/AuthContext'
 
+import firebase from '../config/firebase'
+
 class LoginForm extends Component {
 
     state = {
@@ -16,6 +18,14 @@ class LoginForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this.state)
+
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch((error) => {
+            // Handle Errors here.
+            // var errorCode = error.code;
+            // var errorMessage = error.message;
+            console.log(error)
+        });
+
     }
 
     render() {
@@ -59,6 +69,20 @@ class RegisterForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this.state)
+
+        if(this.state.email === ""){
+            return alert("Please enter email.")
+        }
+        if(this.state.password !== this.state.confirmPassword){
+            return alert("You're password doesn't match.")
+        }
+
+        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // ...
+        });
     }
 
     render() {

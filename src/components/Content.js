@@ -87,6 +87,7 @@ class Content extends Component {
                                                     : <h5 className="card-panel red white-text center">You must Login to add new todo</h5>
                                                     
                                             }
+                                            
                                         </div>
                                     </div>
                                 </div>

@@ -4,9 +4,19 @@ import { Link } from 'react-router-dom'
 
 import { AuthContext } from '../contexts/AuthContext'
 
+import firebase from '../config/firebase'
+
 class Header extends Component {
 
     static contextType = AuthContext
+
+    handleClick = () => {
+        firebase.auth().signOut().then(function () {
+            // Sign-out successful.
+        }).catch(function (error) {
+            // An error happened.
+        });
+    }
 
     render() {
 
@@ -23,7 +33,7 @@ class Header extends Component {
                             {
                                 !this.context.isAuthenticated
                                     ? <li><Link to="/login">Login</Link></li>
-                                    : <li><Link to="/">Logout</Link></li>
+                                    : <li><Link to="/" onClick={this.handleClick}>Logout</Link></li>
 
                             }
                         </ul>
