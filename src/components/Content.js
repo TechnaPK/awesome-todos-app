@@ -29,9 +29,8 @@ class AddTodo extends Component {
                             <label htmlFor="todoField">Enter Todo</label>
                         </div>
                     </div>
-                    <div style={{overflow: 'auto'}}>
-
-                        <button className="btn purple lighten-1 right" onClick={() => {
+                    <div className="right-align">
+                        <button className="btn teal" onClick={() => {
                             let todo = { title: this.state.todoField, time: "any", isCompleted: false }
                             todosContext.addToList(todo)
                         }}>Add Todo</button>

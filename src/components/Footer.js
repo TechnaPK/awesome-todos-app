@@ -7,7 +7,7 @@ class Footer extends Component {
         let d = new Date()
 
         return <div className="Footer">
-            <footer className="page-footer purple lighten-1">
+            <footer className="page-footer teal">
                 <div className="container">
                     <div className="row">
                         <div className="col l6 s12">
