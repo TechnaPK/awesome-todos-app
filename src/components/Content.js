@@ -14,7 +14,7 @@ class AddTodo extends Component {
     }
 
     render() {
-        
+
         return <TodosContext.Consumer>
 
             {(todosContext) => {
@@ -81,14 +81,16 @@ class Content extends Component {
                                     </div>
                                     <div className="col s4">
                                         <div className="card-panel">
-
-                                            <AddTodo addToList={this.addToList} />
+                                            {
+                                                authContext.isAuthenticated === true
+                                                    ? <AddTodo />
+                                                    : <h5 className="card-panel red white-text center">You must Login to add new todo</h5>
+                                                    
+                                            }
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            {/* <DisplayTodos abc={this.state.todos} /> */}
 
                         </div>
 
