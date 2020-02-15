@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { TodosContext } from '../contexts/TodosContext'
 import { AuthContext } from '../contexts/AuthContext'
 
+import { db } from '../config/firebase'
+
 class AddTodo extends Component {
 
     state = {
@@ -14,33 +16,49 @@ class AddTodo extends Component {
     }
 
     render() {
+        return <AuthContext.Consumer>
+            {(authContext) => {
 
-        return <TodosContext.Consumer>
+                return <TodosContext.Consumer>
 
-            {(todosContext) => {
+                    {(todosContext) => {
 
-                return <div className="AddTodo">
-                    <div className="row">
-                        <div className="col s12">
-                            <h5>Add New Item</h5>
+                        return <div className="AddTodo">
+                            <div className="row">
+                                <div className="col s12">
+                                    <h5>Add New Item</h5>
+                                </div>
+                                <div className="input-field col s12">
+                                    <input value={this.state.todoField} id="todoField" type="text" className="validate" onChange={this.handleChange} />
+                                    <label htmlFor="todoField">Enter Todo</label>
+                                </div>
+                            </div>
+                            <div className="right-align">
+                                <button className="btn teal" onClick={() => {
+
+                                    let todo = { title: this.state.todoField, time: "any", isCompleted: false }
+                                    todo.userId = authContext.user.uid
+
+                                    db.collection("todos").add(todo)
+                                        .then((docRef) => {
+
+                                            todo.id = docRef.id
+                                            todosContext.addToList(todo)
+                                            console.log("Document written with ID: ", docRef.id);
+
+                                        })
+                                        .catch((error) => {
+                                            console.error("Error adding document: ", error);
+                                        });
+                                }}>Add Todo</button>
+                            </div>
                         </div>
-                        <div className="input-field col s12">
-                            <input value={this.state.todoField} id="todoField" type="text" className="validate" onChange={this.handleChange} />
-                            <label htmlFor="todoField">Enter Todo</label>
-                        </div>
-                    </div>
-                    <div className="right-align">
-                        <button className="btn teal" onClick={() => {
-                            let todo = { title: this.state.todoField, time: "any", isCompleted: false }
-                            todosContext.addToList(todo)
-                        }}>Add Todo</button>
-                    </div>
-                </div>
 
+                    }}
+
+                </TodosContext.Consumer>
             }}
-
-        </TodosContext.Consumer>
-
+        </AuthContext.Consumer>
     }
 
 }
@@ -85,9 +103,9 @@ class Content extends Component {
                                                 authContext.isAuthenticated === true
                                                     ? <AddTodo />
                                                     : <h5 className="card-panel red white-text center">You must Login to add new todo</h5>
-                                                    
+
                                             }
-                                            
+
                                         </div>
                                     </div>
                                 </div>

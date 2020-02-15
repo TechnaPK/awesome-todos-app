@@ -1,6 +1,11 @@
 import React, { Component, createContext } from 'react';
 
+import { db } from '../config/firebase'
+
+import M from 'materialize-css'
+
 export const TodosContext = createContext();
+
 
 export default class TodosContextProvider extends Component {
 
@@ -13,44 +18,70 @@ export default class TodosContextProvider extends Component {
     }
 
     componentDidMount = () => {
-        let oldTodos = JSON.parse(localStorage.getItem("todos")) || []
-        this.setState({ todos: oldTodos })
+
+        db.collection("todos").limit(1).get().then((querySnapshot) => {
+
+            let todos = []
+            querySnapshot.forEach((doc) => {
+                let todo = doc.data()
+                todo.id = doc.id
+                console.log(todo)
+                // console.log(`${doc.id} => ${doc.data()}`);
+                todos.push(todo)
+            });
+
+            this.setState({ todos: todos })
+
+        });
     }
 
     addToList = (todo) => {
 
         let newTodos = [...this.state.todos, todo]
         this.setState({ todos: newTodos })
-        this.saveToStorage(newTodos)
 
     }
 
     markCompleted = (todo) => {
 
-        let newTodos = this.state.todos.map((t, i) => {
-            if (todo === t)
-                t.isCompleted = true
+        var docRef = db.collection("todos").doc(todo.id);
 
-            return t
-        })
+        // Set the "capital" field of the city 'DC'
+        return docRef.update({ isCompleted: true })
+            .then(() => {
+                console.log("Document successfully updated!");
 
-        this.setState({ todos: newTodos })
-        this.saveToStorage(newTodos)
+                let newTodos = this.state.todos.map((t, i) => {
+                    if (todo === t)
+                        t.isCompleted = true
+                    return t
+                })
+
+                this.setState({ todos: newTodos })
+            })
+            .catch((error) => {
+                // The document probably doesn't exist.
+                console.error("Error updating document: ", error);
+            });
+
     }
 
     deleteTodo = (todo) => {
 
-        let newTodos = this.state.todos.filter((t, i)=>{
-            return t !== todo
-        })
+        db.collection("todos").doc(todo.id).delete()
+            .then(() => {
 
-        this.setState({ todos: newTodos })
-        this.saveToStorage(newTodos)
+                M.toast({ html: `${todo.title} deleted successfully`, classes: 'green' })
+                let newTodos = this.state.todos.filter((t, i) => {
+                    return t !== todo
+                })
 
-    }
+                this.setState({ todos: newTodos })
 
-    saveToStorage = (newTodos) => {
-        localStorage.setItem("todos", JSON.stringify(newTodos))
+            }).catch(function (error) {
+                console.error("Error removing document: ", error);
+            });
+
     }
 
     render() {
