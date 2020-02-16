@@ -6,6 +6,8 @@ import { AuthContext } from '../contexts/AuthContext'
 
 import firebase from '../config/firebase'
 
+import logo from '../images/logo.png'
+
 class Header extends Component {
 
     static contextType = AuthContext
@@ -25,7 +27,7 @@ class Header extends Component {
             <nav className="teal">
                 <div className="nav-wrapper">
                     <div className="container">
-                        <Link className="brand-logo" to="/">Todo Application</Link>
+                        <Link className="brand-logo" to="/"><img src={logo} alt="Logo"/></Link>
                         <ul id="nav-mobile" className="right hide-on-med-and-down">
                             <li><Link to="/">Home</Link></li>
                             <li><Link to="/about">About</Link></li>

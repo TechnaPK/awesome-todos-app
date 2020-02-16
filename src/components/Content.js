@@ -2,17 +2,61 @@ import React, { Component } from 'react';
 import { TodosContext } from '../contexts/TodosContext'
 import { AuthContext } from '../contexts/AuthContext'
 
-import { db } from '../config/firebase'
+import { db, storage, storageRef } from '../config/firebase'
+
+import M from 'materialize-css'
 
 class AddTodo extends Component {
 
     state = {
-        todoField: ""
+        todoField: "",
+        fileURL: null
     }
 
     handleChange = (event) => {
 
         this.setState({ todoField: event.target.value })
+    }
+
+    handleFileSelection = (event) => {
+
+        let files = event.target.files
+
+        if (files.length < 1) {
+            return this.setState({ fileURL: null })
+        }
+
+        let file = event.target.files[0]
+
+        storageRef.child(`images/${file.name}`).put(file).then((snapshot) => {
+
+            console.log('Uploaded a blob or file!');
+            console.log(snapshot);
+            snapshot.ref.getDownloadURL().then((downloadURL) => {
+                console.log('File available at', downloadURL);
+                this.setState({ fileURL: downloadURL })
+            });
+
+        }).catch((e) => {
+
+            console.log(e)
+
+        });
+    }
+
+    deleteFile = () => {
+
+        // Create a reference from an HTTPS URL
+        // Note that in the URL, characters are URL escaped!
+        var httpsReference = storage.refFromURL(this.state.fileURL);
+        // Delete the file
+        httpsReference.delete().then(() => {
+            // File deleted successfully
+            this.setState({ fileURL: null })
+        }).catch(function (error) {
+            console.log(error)
+        });
+
     }
 
     render() {
@@ -28,6 +72,18 @@ class AddTodo extends Component {
                                 <div className="col s12">
                                     <h5>Add New Item</h5>
                                 </div>
+                                <div className="col s12">
+                                    {
+                                        this.state.fileURL !== null
+                                            ? <div className="card-panel">
+
+                                                <img src={this.state.fileURL} alt="" style={{ maxWidth: '100%' }} />
+                                                <br /><button className="btn red" onClick={this.deleteFile}>Delete</button>
+                                            </div>
+                                            : <input type="file" onChange={this.handleFileSelection} />
+                                    }
+
+                                </div>
                                 <div className="input-field col s12">
                                     <input value={this.state.todoField} id="todoField" type="text" className="validate" onChange={this.handleChange} />
                                     <label htmlFor="todoField">Enter Todo</label>
@@ -36,8 +92,14 @@ class AddTodo extends Component {
                             <div className="right-align">
                                 <button className="btn teal" onClick={() => {
 
+
+                                    if (this.state.fileURL === null) {
+                                        return M.toast({ html: `Please upload photo before posting new todo`, classes: 'red' })
+                                    }
+
                                     let todo = { title: this.state.todoField, time: "any", isCompleted: false }
                                     todo.userId = authContext.user.uid
+                                    todo.photo = this.state.fileURL
 
                                     db.collection("todos").add(todo)
                                         .then((docRef) => {

@@ -79,8 +79,8 @@ class RegisterForm extends Component {
 
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function (error) {
             // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
+            // var errorCode = error.code;
+            // var errorMessage = error.message;
             // ...
         });
     }

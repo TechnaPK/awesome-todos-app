@@ -19,7 +19,7 @@ export default class TodosContextProvider extends Component {
 
     componentDidMount = () => {
 
-        db.collection("todos").limit(1).get().then((querySnapshot) => {
+        db.collection("todos").get().then((querySnapshot) => {
 
             let todos = []
             querySnapshot.forEach((doc) => {
